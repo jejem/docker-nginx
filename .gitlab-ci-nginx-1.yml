@@ -1,0 +1,50 @@
+build-nginx-1:
+  stage: build
+  only:
+    refs:
+      - master
+    changes:
+      - 1/*
+  script:
+    - docker build --pull -t $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA 1/
+    - docker push $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
+
+test-nginx-1:
+  stage: test
+  needs: ["build-nginx-1"]
+  only:
+    refs:
+      - master
+    changes:
+      - 1/*
+  script:
+    #- docker pull $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
+    - exit 0
+
+deploy-nginx-1:
+  stage: deploy
+  needs: ["test-nginx-1"]
+  only:
+    refs:
+      - master
+    changes:
+      - 1/*
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:1
+    - docker push $CI_REGISTRY_IMAGE:1
+
+#deploy-nginx-1-to-hub:
+#  stage: deploy
+#  needs: ["test-nginx-1"]
+#  only:
+#    refs:
+#      - master
+#    changes:
+#      - 1/*
+#  script:
+#    - echo $DOCKER_HUB_PASSWORD |docker login -u $DOCKER_HUB_USER --password-stdin
+#    - docker pull $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
+#    - docker tag $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA $DOCKER_HUB_REPOSITORY:1
+#    - docker push $DOCKER_HUB_REPOSITORY:1
+#    - docker rmi $DOCKER_HUB_REPOSITORY:1

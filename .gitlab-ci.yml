@@ -1,0 +1,12 @@
+image: docker:stable
+
+before_script:
+  - echo $CI_REGISTRY_PASSWORD |docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+
+stages:
+  - build
+  - test
+  - deploy
+
+include:
+  - local: '.gitlab-ci-nginx-1.yml'
