@@ -34,17 +34,17 @@ deploy-nginx-1:
     - docker tag $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA $CI_REGISTRY_IMAGE:1
     - docker push $CI_REGISTRY_IMAGE:1
 
-#deploy-nginx-1-to-hub:
-#  stage: deploy
-#  needs: ["test-nginx-1"]
-#  only:
-#    refs:
-#      - master
-#    changes:
-#      - 1/*
-#  script:
-#    - echo $DOCKER_HUB_PASSWORD |docker login -u $DOCKER_HUB_USER --password-stdin
-#    - docker pull $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
-#    - docker tag $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA $DOCKER_HUB_REPOSITORY:1
-#    - docker push $DOCKER_HUB_REPOSITORY:1
-#    - docker rmi $DOCKER_HUB_REPOSITORY:1
+deploy-nginx-1-to-hub:
+  stage: deploy
+  needs: ["test-nginx-1"]
+  only:
+    refs:
+      - master
+    changes:
+      - 1/*
+  script:
+    - echo $DOCKER_HUB_PASSWORD |docker login -u $DOCKER_HUB_USER --password-stdin
+    - docker pull $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA
+    - docker tag $CI_REGISTRY_IMAGE:1-$CI_COMMIT_SHORT_SHA $DOCKER_HUB_REPOSITORY:1
+    - docker push $DOCKER_HUB_REPOSITORY:1
+    - docker rmi $DOCKER_HUB_REPOSITORY:1
