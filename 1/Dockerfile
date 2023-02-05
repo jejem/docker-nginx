@@ -31,6 +31,8 @@ RUN set -eux; \
     ln -sfT /dev/stdout /var/log/nginx/access.log; \
     ln -sfT /dev/stderr /var/log/nginx/error.log
 
+COPY default /etc/nginx/sites-available/default
+
 WORKDIR /var/www/html
 
 EXPOSE 80
