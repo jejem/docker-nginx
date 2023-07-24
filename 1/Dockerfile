@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 MAINTAINER Jérémy "Jejem" Desvages <jejem@phyrexia.org>
 
 RUN set -eux; \
