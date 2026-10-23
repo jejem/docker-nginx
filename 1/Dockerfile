@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 MAINTAINER Jérémy "Jejem" Desvages <jejem@phyrexia.org>
 
 RUN set -eux; \
